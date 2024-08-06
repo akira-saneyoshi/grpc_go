@@ -1,0 +1,13 @@
+services:
+  protocservice:
+    build:
+      context: .
+      dockerfile: ./docker/protobuf/Dockerfile
+    container_name: grpc_protoc
+    hostname: protocservice
+    tty: true
+    volumes:
+      - ./grpc_backend/protoc_service:/opt/protoc_service
+    # command: sh -c "go mod tidy"
+    ports:
+      - 8090:8090

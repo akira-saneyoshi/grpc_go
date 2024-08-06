@@ -1,6 +1,7 @@
 FROM golang:1.22.5
 
 ARG PROTOBUF_VERSION=27.3
+EXPOSE 8090
 
 RUN apt-get update \
     && apt-get install -y build-essential \
@@ -21,3 +22,9 @@ RUN apt-get update \
     && apt-get install -y --no-install-recommends protobuf-compiler \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /opt/protoc_service
+COPY ./grpc_backend/protoc_service /opt/protoc_service
+RUN go mod tidy \
+  && go install google.golang.org/protobuf/cmd/protoc-gen-go@latest \
+  && go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
