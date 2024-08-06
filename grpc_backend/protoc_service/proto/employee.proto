@@ -2,7 +2,9 @@ syntax = "proto3";
 
 package employee;
 
-import "protoc_service/date.proto";
+option go_package = "./pb";
+
+import "proto/date.proto";
 
 message Employee {
   int32 id = 1;
