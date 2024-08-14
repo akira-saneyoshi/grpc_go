@@ -7,3 +7,6 @@ down:
 
 build:
 	docker compose build
+
+exec:
+	docker exec -it grpc_protoc bash
