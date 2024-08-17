@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"fmt"
+	"io"
 	"log"
 	"udemy_study/go_grpc/pb"
 
@@ -17,7 +18,8 @@ func main() {
 	defer conn.Close()
 
 	client := pb.NewFileServiceClient(conn)
-	callListFiles(client)
+	// callListFiles(client)
+	callDownload(client)
 }
 
 func callListFiles(client pb.FileServiceClient) {
@@ -27,4 +29,25 @@ func callListFiles(client pb.FileServiceClient) {
 	}
 
 	fmt.Println(res.GetFilenames())
+}
+
+func callDownload(client pb.FileServiceClient) {
+	req := &pb.DownloadRequest{Filename: "name.txt"}
+	stream, err := client.Download(context.Background(), req)
+	if err != nil {
+		log.Fatalln(err)
+	}
+
+	for {
+		res, err := stream.Recv()
+		if err == io.EOF {
+			break
+		}
+		if err != nil {
+			log.Fatalln(err)
+		}
+
+		log.Printf("Response from Download(butes): %v", res.GetData())
+		log.Printf("Response from Download(string): %v", string(res.GetData()))
+	}
 }

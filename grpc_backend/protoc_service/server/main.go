@@ -44,7 +44,7 @@ func (*server) Download(req *pb.DownloadRequest, stream pb.FileService_DownloadS
 	fmt.Println("Download was invoked")
 
 	filename := req.GetFilename()
-	path := "/opt/protoc_service/storage" + filename
+	path := "/opt/protoc_service/storage/" + filename
 
 	file, err := os.Open(path)
 	if err != nil {
